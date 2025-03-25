@@ -1,0 +1,171 @@
+[gd_scene load_steps=6 format=3 uid="uid://cpbw12mkkrvtr"]
+
+[ext_resource type="Script" uid="uid://dkfgekq6ie1jp" path="res://src/main/main.gd" id="1_3eh75"]
+[ext_resource type="PackedScene" uid="uid://td0640bwqf4f" path="res://src/timer/timer.tscn" id="2_3s6yk"]
+[ext_resource type="AudioStream" uid="uid://blv3fsoxoas1b" path="res://assets/sfx/timer_end.wav" id="3_djufw"]
+[ext_resource type="AudioStream" uid="uid://dmbii2txfvmyd" path="res://assets/sfx/all_timers_end.wav" id="4_jkpqq"]
+
+[sub_resource type="Theme" id="Theme_rccf1"]
+MarginContainer/constants/margin_bottom = 16
+MarginContainer/constants/margin_left = 16
+MarginContainer/constants/margin_right = 16
+MarginContainer/constants/margin_top = 16
+
+[node name="Main" type="Control" node_paths=PackedStringArray("timer_chime", "timer", "timer_collection_ui", "start_button", "add_timer_button", "timer_popup", "add_timer_line_edit", "add_timer_duration_hours", "add_timer_duration_minutes", "add_timer_duration_seconds")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_rccf1")
+script = ExtResource("1_3eh75")
+timer_chime = NodePath("TimerChime")
+timer = NodePath("Timer")
+timer_collection_ui = NodePath("PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/AddedTimers")
+start_button = NodePath("PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown/StartButton")
+add_timer_button = NodePath("PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/AddTimerButton")
+timer_popup = NodePath("AddTimerPopup")
+add_timer_line_edit = NodePath("AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer/LineEdit")
+add_timer_duration_hours = NodePath("AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer2/HoursSpinBox")
+add_timer_duration_minutes = NodePath("AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer2/MinutesSpinBox")
+add_timer_duration_seconds = NodePath("AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer2/SecondsSpinBox")
+timer_scene = ExtResource("2_3s6yk")
+timer_timeout_chime = ExtResource("3_djufw")
+timer_all_done_chime = ExtResource("4_jkpqq")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+split_offset = -190
+drag_area_highlight_in_editor = true
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Timers" type="VBoxContainer" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="AddedTimers" type="VBoxContainer" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers"]
+layout_mode = 2
+
+[node name="AddTimerButton" type="Button" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers"]
+layout_mode = 2
+text = "Add Timer"
+
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Countdown" type="VBoxContainer" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StartButton" type="Button" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 64
+toggle_mode = true
+text = "Start"
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown"]
+layout_mode = 2
+
+[node name="ResetButton" type="Button" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown"]
+layout_mode = 2
+text = "Reset"
+
+[node name="TimerChime" type="AudioStreamPlayer" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="AddTimerPopup" type="Popup" parent="."]
+title = "Add Timer"
+initial_position = 1
+size = Vector2i(481, 141)
+unresizable = false
+borderless = false
+
+[node name="MarginContainer" type="MarginContainer" parent="AddTimerPopup"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AddTimerPopup/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AddTimerPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Description"
+
+[node name="LineEdit" type="LineEdit" parent="AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Timer description"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="AddTimerPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Duration"
+
+[node name="HoursSpinBox" type="SpinBox" parent="AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+rounded = true
+allow_greater = true
+alignment = 2
+suffix = "h"
+
+[node name="MinutesSpinBox" type="SpinBox" parent="AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 59.0
+rounded = true
+alignment = 2
+suffix = "m"
+
+[node name="SecondsSpinBox" type="SpinBox" parent="AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 59.0
+value = 30.0
+rounded = true
+alignment = 2
+suffix = "s"
+
+[node name="HSeparator" type="HSeparator" parent="AddTimerPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AddTimerPopupButton" type="Button" parent="AddTimerPopup/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Add New Timer"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/AddTimerButton" to="." method="_on_add_timer_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown/ResetButton" to="." method="_on_reset_button_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="AddTimerPopup/MarginContainer/VBoxContainer/AddTimerPopupButton" to="." method="_on_add_timer_popup_button_pressed"]

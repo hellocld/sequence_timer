@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://td0640bwqf4f"]
+
+[ext_resource type="Script" uid="uid://bcsoi772n1cxb" path="res://src/timer/custom_timer.gd" id="1_yqo6l"]
+
+[node name="Timer" type="HBoxContainer" node_paths=PackedStringArray("activity_rect", "label", "delete_button")]
+script = ExtResource("1_yqo6l")
+active_color = Color(0.559695, 0.948905, 0.166003, 1)
+inactive_color = Color(0.233925, 0.233925, 0.233925, 1)
+activity_rect = NodePath("ColorRect")
+label = NodePath("Label")
+delete_button = NodePath("DeleteButton")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+color = Color(0.525101, 0.525101, 0.525101, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Time"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DeleteButton" type="Button" parent="."]
+layout_mode = 2
+text = "X"
+
+[connection signal="pressed" from="DeleteButton" to="." method="_on_delete_button_pressed"]
