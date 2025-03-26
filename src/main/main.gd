@@ -96,3 +96,11 @@ func _lock_timers(value:bool) -> void:
 	for t in timer_set:
 		t.timer_is_running = value
 	add_timer_button.disabled = value
+
+
+func _on_save_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_load_button_pressed() -> void:
+	pass # Replace with function body.

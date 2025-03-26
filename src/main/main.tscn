@@ -66,6 +66,19 @@ size_flags_vertical = 3
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers"]
 layout_mode = 2
 
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers"]
+layout_mode = 2
+
+[node name="SaveButton" type="Button" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save"
+
+[node name="LoadButton" type="Button" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Load"
+
 [node name="AddTimerButton" type="Button" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers"]
 layout_mode = 2
 text = "Add Timer"
@@ -164,6 +177,8 @@ layout_mode = 2
 layout_mode = 2
 text = "Add New Timer"
 
+[connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/HBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/AddTimerButton" to="." method="_on_add_timer_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown/ResetButton" to="." method="_on_reset_button_pressed"]
