@@ -8,6 +8,9 @@ extends Control
 @export var timer_collection_ui:VBoxContainer
 @export var start_button:Button
 @export var add_timer_button:Button
+@export var timer_set_name_label:Label
+@export var timer_set_name_line_edit:LineEdit
+@export var timer_set_description_text_edit:TextEdit
 
 @export_group("Popup")
 @export var timer_popup:Popup
@@ -15,6 +18,7 @@ extends Control
 @export var add_timer_duration_hours:SpinBox
 @export var add_timer_duration_minutes:SpinBox
 @export var add_timer_duration_seconds:SpinBox
+@export var timer_set_details_popup:Popup
 
 @export_group("Save and Load")
 @export var save_dialog:FileDialog
@@ -29,7 +33,6 @@ extends Control
 @export var timer_all_done_chime:AudioStream
 
 var timer_set_index:int = 0
-
 
 
 func _ready() -> void:
@@ -57,6 +60,9 @@ func _update_timers_ui() -> void:
 		ui.timer_data = t
 		ui.delete_timer.connect(_on_delete_timer)
 		timer_collection_ui.add_child(ui)
+	timer_set_name_label.text = timer_set.name
+	timer_set_name_line_edit.text = timer_set.name
+	timer_set_description_text_edit.text = timer_set.description
 	start_button.disabled = _disable_start_button()
 
 
@@ -147,3 +153,20 @@ func _on_load_timer_set_dialog_file_selected(path: String) -> void:
 	var data = JSON.parse_string(raw_data)
 	timer_set = TimerSet.from_dict(data)
 	_update_timers_ui()
+
+
+func _on_timer_set_name_line_edit_text_changed(new_text: String) -> void:
+	timer_set.name = new_text
+	timer_set_name_label.text = new_text
+
+
+func _on_timer_set_description_text_edit_text_changed() -> void:
+	timer_set.description = timer_set_description_text_edit.text
+
+
+func _on_timer_set_details_close_button_pressed() -> void:
+	timer_set_details_popup.hide()
+
+
+func _on_edit_timer_set_details_button_pressed() -> void:
+	timer_set_details_popup.show()
