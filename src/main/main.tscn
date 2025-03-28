@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cpbw12mkkrvtr"]
+[gd_scene load_steps=10 format=3 uid="uid://cpbw12mkkrvtr"]
 
 [ext_resource type="Script" uid="uid://dkfgekq6ie1jp" path="res://src/main/main.gd" id="1_3eh75"]
 [ext_resource type="PackedScene" uid="uid://td0640bwqf4f" path="res://src/timer/timer.tscn" id="2_3s6yk"]
+[ext_resource type="Script" uid="uid://mh586gvfrh00" path="res://src/main/timer_set.gd" id="2_jqarl"]
+[ext_resource type="Script" uid="uid://cjrcf4d22mmgn" path="res://src/main/timer_data.gd" id="3_30cu5"]
 [ext_resource type="AudioStream" uid="uid://blv3fsoxoas1b" path="res://assets/sfx/timer_end.wav" id="3_djufw"]
 [ext_resource type="AudioStream" uid="uid://dmbii2txfvmyd" path="res://assets/sfx/all_timers_end.wav" id="4_jkpqq"]
 
@@ -11,7 +13,22 @@ MarginContainer/constants/margin_left = 16
 MarginContainer/constants/margin_right = 16
 MarginContainer/constants/margin_top = 16
 
-[node name="Main" type="Control" node_paths=PackedStringArray("timer_chime", "timer", "timer_collection_ui", "start_button", "add_timer_button", "timer_popup", "add_timer_line_edit", "add_timer_duration_hours", "add_timer_duration_minutes", "add_timer_duration_seconds")]
+[sub_resource type="Resource" id="Resource_frqgp"]
+script = ExtResource("3_30cu5")
+description = "Test Timer"
+hours = 0
+minutes = 0
+seconds = 45
+metadata/_custom_type_script = "uid://cjrcf4d22mmgn"
+
+[sub_resource type="Resource" id="Resource_2nke2"]
+script = ExtResource("2_jqarl")
+name = "Test timer set"
+description = "Testing timers for the new timer set data functionality (needed for loading and saving)"
+timers = Array[ExtResource("3_30cu5")]([SubResource("Resource_frqgp")])
+metadata/_custom_type_script = "uid://mh586gvfrh00"
+
+[node name="Main" type="Control" node_paths=PackedStringArray("timer_chime", "timer", "timer_collection_ui", "start_button", "add_timer_button", "timer_popup", "add_timer_line_edit", "add_timer_duration_hours", "add_timer_duration_minutes", "add_timer_duration_seconds", "save_dialog", "load_dialog")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,9 +37,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_rccf1")
 script = ExtResource("1_3eh75")
+timer_set = SubResource("Resource_2nke2")
 timer_chime = NodePath("TimerChime")
 timer = NodePath("Timer")
-timer_collection_ui = NodePath("PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/AddedTimers")
+timer_collection_ui = NodePath("PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/ScrollContainer/AddedTimers")
 start_button = NodePath("PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown/StartButton")
 add_timer_button = NodePath("PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/AddTimerButton")
 timer_popup = NodePath("AddTimerPopup")
@@ -30,6 +48,8 @@ add_timer_line_edit = NodePath("AddTimerPopup/MarginContainer/VBoxContainer/HBox
 add_timer_duration_hours = NodePath("AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer2/HoursSpinBox")
 add_timer_duration_minutes = NodePath("AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer2/MinutesSpinBox")
 add_timer_duration_seconds = NodePath("AddTimerPopup/MarginContainer/VBoxContainer/HBoxContainer2/SecondsSpinBox")
+save_dialog = NodePath("SaveTimerSetDialog")
+load_dialog = NodePath("LoadTimerSetDialog")
 timer_scene = ExtResource("2_3s6yk")
 timer_timeout_chime = ExtResource("3_djufw")
 timer_all_done_chime = ExtResource("4_jkpqq")
@@ -59,8 +79,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="AddedTimers" type="VBoxContainer" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers"]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AddedTimers" type="VBoxContainer" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers"]
@@ -177,6 +202,20 @@ layout_mode = 2
 layout_mode = 2
 text = "Add New Timer"
 
+[node name="SaveTimerSetDialog" type="FileDialog" parent="."]
+title = "Save Timers"
+dialog_hide_on_ok = true
+access = 2
+filters = PackedStringArray("*.json")
+
+[node name="LoadTimerSetDialog" type="FileDialog" parent="."]
+title = "Load Timer Set"
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.json")
+
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/HBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/AddTimerButton" to="." method="_on_add_timer_button_pressed"]
@@ -184,3 +223,5 @@ text = "Add New Timer"
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="AddTimerPopup/MarginContainer/VBoxContainer/AddTimerPopupButton" to="." method="_on_add_timer_popup_button_pressed"]
+[connection signal="file_selected" from="SaveTimerSetDialog" to="." method="_on_save_timer_set_dialog_file_selected"]
+[connection signal="file_selected" from="LoadTimerSetDialog" to="." method="_on_load_timer_set_dialog_file_selected"]

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bcsoi772n1cxb" path="res://src/timer/custom_timer.gd" id="1_yqo6l"]
 
 [node name="Timer" type="HBoxContainer" node_paths=PackedStringArray("activity_rect", "label", "delete_button")]
+size_flags_horizontal = 3
 script = ExtResource("1_yqo6l")
 active_color = Color(0.559695, 0.948905, 0.166003, 1)
 inactive_color = Color(0.233925, 0.233925, 0.233925, 1)
