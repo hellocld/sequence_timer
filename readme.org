@@ -1,0 +1,20 @@
+* Sequence Timer
+
+A little sequenced timer tool thing made in Godot.
+
+** What?
+
+While trying to spin up a new habit requiring a number of smaller exercises one after another, I realized I could use a set of timers that would fire off one after the other. This little tool is the result of my initial work on creating such a thing. It allows for
+
+- The creation of new timers in a sequence
+- Saving and loading timer sets
+- Running the timers in sequence, complete with a little beep to let you know when one timer has completed.
+
+** Todo
+
+- [ ] Add "duplicate timer" functionality
+- [ ] Add a "clear timer set" option for starting from scratch
+- [ ] Allow for the editing of individual timers
+- [ ] Add timer rearrangement functionality
+- [ ] Better start/pause/stop/next/previous button implementation
+ 
