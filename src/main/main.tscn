@@ -158,7 +158,6 @@ text = "Reset"
 title = "Edit Timer Set Details"
 initial_position = 1
 size = Vector2i(410, 248)
-visible = true
 unresizable = false
 borderless = false
 
