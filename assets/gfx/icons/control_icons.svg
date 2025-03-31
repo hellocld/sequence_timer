@@ -41,7 +41,10 @@
        id="page2"
        margin="0"
        bleed="0"
-       inkscape:label="Play" />
+       inkscape:label="Play"
+       inkscape:export-filename="Stop.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <inkscape:page
        x="143.57104"
        y="-0.25276595"
