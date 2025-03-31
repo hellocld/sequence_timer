@@ -16,5 +16,5 @@ While trying to spin up a new habit requiring a number of smaller exercises one 
 - [ ] Add a "clear timer set" option for starting from scratch
 - [ ] Allow for the editing of individual timers
 - [ ] Add timer rearrangement functionality
-- [ ] Better start/pause/stop/next/previous button implementation
+- [X] Better start/pause/stop/next/previous button implementation
  
