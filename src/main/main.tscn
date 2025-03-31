@@ -124,6 +124,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Load"
 
+[node name="ResetButton" type="Button" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers"]
+layout_mode = 2
+text = "Reset Timer Set
+"
+
 [node name="AddTimerButton" type="Button" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers"]
 layout_mode = 2
 text = "Add Timer"
@@ -146,9 +151,8 @@ text = "Start"
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown"]
 layout_mode = 2
 
-[node name="ResetButton" type="Button" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown"]
+[node name="ControlButtons" type="HBoxContainer" parent="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown"]
 layout_mode = 2
-text = "Reset"
 
 [node name="TimerChime" type="AudioStreamPlayer" parent="."]
 
@@ -279,7 +283,7 @@ access = 2
 filters = PackedStringArray("*.json")
 
 [node name="LoadTimerSetDialog" type="FileDialog" parent="."]
-title = "Load Timer Set"
+title = "Open a File"
 ok_button_text = "Open"
 dialog_hide_on_ok = true
 file_mode = 0
@@ -289,9 +293,9 @@ filters = PackedStringArray("*.json")
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/HBoxContainer2/EditTimerSetDetailsButton" to="." method="_on_edit_timer_set_details_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/HBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer/Timers/AddTimerButton" to="." method="_on_add_timer_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/HSplitContainer/MarginContainer2/Countdown/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="text_changed" from="EditTimerSetDetailsPopup/MarginContainer/VBoxContainer/NameContainer/TimerSetNameLineEdit" to="." method="_on_timer_set_name_line_edit_text_changed"]
 [connection signal="text_changed" from="EditTimerSetDetailsPopup/MarginContainer/VBoxContainer/Description Container/TimerSetDescriptionTextEdit" to="." method="_on_timer_set_description_text_edit_text_changed"]
