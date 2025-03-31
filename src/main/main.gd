@@ -6,11 +6,18 @@ extends Control
 @export var timer_chime:AudioStreamPlayer
 @export var timer:Timer
 @export var timer_collection_ui:VBoxContainer
-@export var start_button:Button
 @export var add_timer_button:Button
 @export var timer_set_name_label:Label
 @export var timer_set_name_line_edit:LineEdit
 @export var timer_set_description_text_edit:TextEdit
+
+@export_group("Running Timer UI")
+@export var time_remaining_label:Label
+@export var current_timer_description_label:Label
+
+@export_group("Timer Controls")
+@export var stop_button:TextureButton
+@export var start_pause_button:TextureButton
 
 @export_group("Popup")
 @export var timer_popup:Popup
@@ -36,7 +43,8 @@ var timer_set_index:int = 0
 
 
 func _ready() -> void:
-	start_button.disabled = _disable_start_button()
+	stop_button.disabled = _disable_start_button()
+	start_pause_button.button_pressed = false
 	if timer_set:
 		_update_timers_ui()
 	else:
@@ -48,8 +56,8 @@ func _process(_delta:float) -> void:
 	if !timer.is_stopped() && timer_set_index >= 0:
 		var hours = int(timer.time_left) / 60 / 60
 		var minutes = (int(timer.time_left) / 60) % 60
-		var seconds = int(timer.time_left) % 60
-		start_button.text = "%02d:%02d:%02d" % [hours, minutes, seconds]
+		var seconds = (int(timer.time_left) % 60)
+		time_remaining_label.text = "%02d:%02d:%02d" % [hours, minutes, seconds]
 
 
 func _update_timers_ui() -> void:
@@ -63,18 +71,11 @@ func _update_timers_ui() -> void:
 	timer_set_name_label.text = timer_set.name
 	timer_set_name_line_edit.text = timer_set.name
 	timer_set_description_text_edit.text = timer_set.description
-	start_button.disabled = _disable_start_button()
+	start_pause_button.disabled = _disable_start_button()
 
 
 func _on_add_timer_button_pressed() -> void:
 	timer_popup.popup_centered()
-
-
-func _on_start_button_pressed() -> void:
-	_lock_timer_ui(true)
-	start_button.text = "Get Ready"
-	timer_set_index = -1
-	timer.start(3)
 
 
 func _on_reset_button_pressed() -> void:
@@ -89,7 +90,8 @@ func _on_timer_timeout() -> void:
 		timer_chime.stream = timer_all_done_chime
 		_lock_timer_ui(false)
 		timer.stop()
-		start_button.text = "Start"
+		current_timer_description_label.text = ""
+		start_pause_button.button_pressed = false
 	else:
 		timer_chime.stream = timer_timeout_chime
 		for t:CustomTimer in timer_collection_ui.get_children():
@@ -97,6 +99,7 @@ func _on_timer_timeout() -> void:
 				t.is_active = true
 				break
 		timer.start(timer_set.timers[timer_set_index].duration_in_seconds)
+		current_timer_description_label.text = timer_set.timers[timer_set_index].description
 	timer_chime.play()
 
 
@@ -109,7 +112,7 @@ func _on_add_timer_popup_button_pressed() -> void:
 	timer_set.timers.push_back(new_timer_data)
 	_update_timers_ui()
 	timer_popup.hide()
-	start_button.disabled = _disable_start_button()
+	start_pause_button.disabled = _disable_start_button()
 
 
 
@@ -170,3 +173,23 @@ func _on_timer_set_details_close_button_pressed() -> void:
 
 func _on_edit_timer_set_details_button_pressed() -> void:
 	timer_set_details_popup.show()
+
+
+func _on_start_pause_button_toggled(toggled_on: bool) -> void:
+	timer.paused = !toggled_on
+	if toggled_on && timer.is_stopped():
+		_start_timer_sequence()
+
+
+func _start_timer_sequence() -> void:
+	_lock_timer_ui(true)
+	timer_set_index = -1
+	_on_timer_timeout()
+
+
+func _on_stop_button_pressed() -> void:
+	timer.stop()
+	start_pause_button.button_pressed = false
+	current_timer_description_label.text = ""
+	time_remaining_label.text = "00:00:00"
+	_update_timers_ui()
